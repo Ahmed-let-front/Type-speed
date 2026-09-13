@@ -1,7 +1,7 @@
 # Frontend Mentor - Typing Speed Test
 
 ![Design preview for the Typing Speed Test coding challenge](public/design/preview.jpg)
-
+##[live Demo](https://ahmed-let-front.github.io/Type-speed/)
 ## Welcome! 👋
 
 Thanks for checking out this front-end coding challenge.
