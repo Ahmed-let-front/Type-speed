@@ -1,6 +1,6 @@
 # Frontend Mentor - Typing Speed Test
 
-![Design preview for the Typing Speed Test coding challenge](./preview.jpg)
+![Design preview for the Typing Speed Test coding challenge](public/design/preview.jpg)
 
 ## Welcome! 👋
 
