@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Test Your Speed in Typing Now" />
+    <link rel="icon" type="image/png" href="favicon-32x32.png" />
+    <script src="src/js/main.js" type="module"></script>
+    <title>typing-speed</title>
+  </head>
+  <body class="relative bg-neutral-900 font-sans text-neutral-0 antialiased">
+    <main class="relative mx-auto px-8 py-12 sm:px-[3.2rem] lg:px-[4.8rem]">
+      <header class="flex flex-col gap-18 mb-8">
+        <div class="flex flex-wrap gap-[1.6rem] items-center justify-between">
+          <div class="flex items-center gap-[1.2rem]">
+            <svg viewBox="0 0 32 32" class="size-10 md:size-14">
+              <use href="images/sprite.svg#topup-icon"></use>
+            </svg>
+            <div>
+              <h1 class="text-[1rem] font-bold leading-tight sm:text-[2rem]">
+                Typing Speed Test
+              </h1>
+              <p
+                class="text-[1.2rem] text-neutral-500 sm:text-[1.3rem] hidden md:block"
+              >
+                Type as fast as you can in 60 seconds
+              </p>
+            </div>
+          </div>
+          <p
+            class="flex items-center gap-[0.8rem] text-[1.3rem] text-neutral-500 sm:text-[1.4rem]"
+          >
+            <svg aria-hidden="true" class="h-[1.6rem] w-[1.6rem] shrink-0">
+              <use href="images/sprite.svg#decorative-ribbon"></use>
+            </svg>
+            <span class="hidden md:inline">Personal</span>Best:
+            <strong class="font-bold text-neutral-0"
+              ><span id="lastWPMEl">0</span> WPM</strong
+            >
+          </p>
+        </div>
+
+        <div
+          class="flex flex-col gap-[1.6rem] md:flex-row md:flex-wrap md:items-center md:justify-center xl:justify-between"
+        >
+          <div
+            class="grid grid-cols-3 justify-center items-center divide-x divide-neutral-800 text-center md:flex md:items-center md:gap-[2.4rem] md:divide-x-0 md:text-left"
+          >
+            <p class="px-[0.4rem] text-[1.4rem] sm:text-[1.6rem]">
+              <span class="block text-neutral-500 md:inline">WPM:</span>
+              <strong
+                class="block text-[2rem] font-bold md:inline md:ms-[0.6rem]"
+                id="liveWPM"
+                >0</strong
+              >
+            </p>
+            <p
+              class="px-[0.4rem] text-[1.4rem] sm:text-[1.6rem] md:border-l md:border-neutral-800 md:pl-[2.4rem]"
+            >
+              <span class="block text-neutral-500 md:inline">Accuracy:</span>
+              <strong
+                class="block text-[2rem] font-bold md:inline md:ms-[0.6rem] text-red-500"
+                ><span id="liveAcc">100</span>%</strong
+              >
+            </p>
+            <p
+              class="px-[0.4rem] text-[1.4rem] sm:text-[1.6rem] md:border-l md:border-neutral-800 md:pl-[2.4rem]"
+            >
+              <span class="block text-neutral-500 md:inline">Time:</span>
+              <strong
+                class="block text-[2rem] font-bold md:inline md:ms-[0.6rem] text-yellow-400"
+                id="timeCounter"
+                ><span id="min">01</span>:<span id="sec">00</span></strong
+              >
+            </p>
+          </div>
+
+          <div class="hidden items-center gap-[2.4rem] md:flex">
+            <div class="flex items-center gap-[1rem]" id="difficultyPanel">
+              <span class="text-[1.4rem] text-neutral-500">Difficulty:</span>
+              <div class="flex gap-[0.8rem] items-center justify-center">
+                <button
+                  type="button"
+                  class="chip chip-active"
+                  data-difficulty="easy"
+                >
+                  Easy
+                </button>
+                <button type="button" class="chip" data-difficulty="medium">
+                  Medium
+                </button>
+                <button
+                  type="button"
+                  class="chip"
+                  aria-pressed="true"
+                  data-difficulty="hard"
+                >
+                  Hard
+                </button>
+              </div>
+            </div>
+            <div class="flex items-center gap-[1rem]" id="modePanel">
+              <span class="text-[1.4rem] text-neutral-500">Mode:</span>
+              <div class="flex gap-[0.8rem]">
+                <button
+                  type="button"
+                  class="chip chip-active"
+                  aria-pressed="true"
+                  data-mode="timed"
+                >
+                  Timed (60s)
+                </button>
+                <button type="button" class="chip" data-mode="passage">
+                  Passage
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-center gap-[1.2rem] md:hidden">
+            <details class="dropdown" name="settings-dropdown">
+              <summary class="dropdown-trigger">
+                <span class="dropdown-heading capitalize">Hard</span>
+                <svg
+                  class="icon-recolor h-[1rem] w-[1rem] duration-500 transition-transform"
+                  aria-hidden="true"
+                >
+                  <use href="images/sprite.svg#chevron-down"></use>
+                </svg>
+              </summary>
+              <fieldset class="dropdown-panel">
+                <legend class="sr-only">Difficulty</legend>
+                <label class="dropdown-option">
+                  <input
+                    type="radio"
+                    name="difficulty-idle"
+                    value="easy"
+                    class="h-[1.6rem] w-[1.6rem] accent-blue-600"
+                  />
+                  Easy
+                </label>
+                <label class="dropdown-option">
+                  <input
+                    type="radio"
+                    name="difficulty-idle"
+                    value="medium"
+                    class="h-[1.6rem] w-[1.6rem] accent-blue-600"
+                  />
+                  Medium
+                </label>
+                <label class="dropdown-option">
+                  <input
+                    type="radio"
+                    name="difficulty-idle"
+                    value="hard"
+                    class="h-[1.6rem] w-[1.6rem] accent-blue-600"
+                    checked
+                  />
+                  Hard
+                </label>
+              </fieldset>
+            </details>
+            <details class="dropdown" name="settings-dropdown">
+              <summary class="dropdown-trigger">
+                <span class="dropdown-heading capitalize"> timed</span>
+                <svg
+                  class="icon-recolor h-[1rem] w-[1rem] duration-500 transition-transform"
+                  aria-hidden="true"
+                >
+                  <use href="images/sprite.svg#chevron-down"></use>
+                </svg>
+              </summary>
+              <fieldset class="dropdown-panel">
+                <legend class="sr-only">Mode</legend>
+                <label class="dropdown-option">
+                  <input
+                    type="radio"
+                    name="mode-idle"
+                    value="timed"
+                    class="h-[1.6rem] w-[1.6rem] accent-blue-600"
+                    checked
+                  />
+                  Timed (60s)
+                </label>
+                <label class="dropdown-option">
+                  <input
+                    type="radio"
+                    name="mode-idle"
+                    value="passage"
+                    class="h-[1.6rem] w-[1.6rem] accent-blue-600"
+                  />
+                  Passage
+                </label>
+              </fieldset>
+            </details>
+          </div>
+        </div>
+      </header>
+
+      <hr class="divider" />
+      <div class="relative mt-14" id="content">
+        <p
+          class="select-none relative text-[2rem] leading-[1.7] text-neutral-500 overlay-text sm:text-[2.8rem]"
+          id="theTextForTest"
+        >
+          The sun rose over the quiet town. Birds sang in the trees as people
+          woke up and started their day.
+        </p>
+
+        <div
+          class="absolute left-1/2 top-1/2 -translate-1/2 flex flex-col items-center justify-center gap-[1.6rem] px-[2rem] text-center duration-500 transition-[opacity_transform]"
+          id="not-started"
+        >
+          <button type="button" id="btnStartTest" class="btn-primary">
+            Start Typing Test
+          </button>
+          <p class="text-4 font-bold sm:text-[1.6rem]">
+            Or click the text and start typing
+          </p>
+        </div>
+        <div class="border-t border-neutral-800 mt-14">
+          <button
+            type="button"
+            class="btn-secondary p-4 bg-neutral-300 flex disabled:blur-[0.3rem] mx-auto btnReset text-xl mt-14 cursor-pointer"
+            id="resetBtnTest"
+            disabled
+          >
+            Reset Test
+            <svg class="icon-recolor h-[1.6rem] w-[1.6rem]" aria-hidden="true">
+              <use href="images/sprite.svg#refresh"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="mx-auto flex container-shape w-full max-w-[52rem] flex-col items-center gap-[1.2rem] py-[2.4rem] sm:gap-[1.6rem] sm:py-[3.2rem] text-center hidden-item"
+        id="test-complete"
+        inert
+      >
+        <svg
+          aria-hidden="true"
+          class="h-[5rem] w-[5rem] sm:h-[6rem] sm:w-[6rem]"
+        >
+          <use href="images/sprite.svg#check-circle"></use>
+        </svg>
+        <h2 class="text-[2.4rem] font-bold sm:text-[3.4rem]">Test Complete!</h2>
+        <p class="text-[1.4rem] text-neutral-500 sm:text-[1.6rem]">
+          Solid run. Keep pushing to beat your high score.
+        </p>
+
+        <div
+          class="mt-[1.2rem] grid w-full grid-cols-1 gap-[1.2rem] sm:mt-[1.6rem] sm:grid-cols-3 sm:gap-[1.6rem]"
+        >
+          <div class="stat-card">
+            <p class="stat-label">WPM:</p>
+            <output class="result-wpm text-[1.6rem] font-bold sm:text-[2rem]"
+              >85</output
+            >
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Accuracy:</p>
+            <output class="text-[1.6rem] font-bold text-red-500 sm:text-[2rem]">
+              <span class="result-accuracy">90</span>%
+            </output>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Characters</p>
+            <output class="text-[1.6rem] font-bold sm:text-[2rem]">
+              <span class="result-correct-chars text-green-500">120</span
+              ><span class="text-neutral-500">/</span
+              ><span class="result-wrong-chars text-red-500">5</span>
+            </output>
+          </div>
+          <div class="stat-card col-span-full">
+            <p class="stat-label">Time:</p>
+            <output class="text-[1.6rem] font-bold sm:text-[2rem]"
+              ><span class="result-time">60</span>s</output
+            >
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-secondary btnReset mt-[1.2rem] sm:mt-[1.6rem] cursor-pointer"
+        >
+          Go Again
+          <svg class="icon-recolor h-[1.6rem] w-[1.6rem]" aria-hidden="true">
+            <use href="images/sprite.svg#refresh"></use>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        class="mx-auto flex w-full container-shape max-w-[52rem] flex-col items-center gap-[1.2rem] py-[2.4rem] sm:gap-[1.6rem] sm:py-[3.2rem] text-center hidden-item"
+        id="baseline-established"
+        inert
+      >
+        <svg
+          aria-hidden="true"
+          class="h-[5rem] w-[5rem] sm:h-[6rem] sm:w-[6rem]"
+        >
+          <use href="images/sprite.svg#check-circle"></use>
+        </svg>
+        <h2 class="text-[2.4rem] font-bold sm:text-[3.4rem]">
+          Baseline Established!
+        </h2>
+        <p class="text-[1.4rem] text-neutral-500 sm:text-[1.6rem]">
+          You've set the bar. Now the real challenge begins—time to beat it.
+        </p>
+        <div
+          class="mt-[1.2rem] grid w-full grid-cols-1 gap-[1.2rem] sm:mt-[1.6rem] sm:grid-cols-3 sm:gap-[1.6rem]"
+        >
+          <div class="stat-card">
+            <p class="stat-label">WPM:</p>
+            <output class="result-wpm text-[1.6rem] font-bold sm:text-[2rem]"
+              >85</output
+            >
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Accuracy:</p>
+            <output class="text-[1.6rem] font-bold text-red-500 sm:text-[2rem]">
+              <span class="result-accuracy">90</span>%
+            </output>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Characters</p>
+            <output class="text-[1.6rem] font-bold sm:text-[2rem]">
+              <span class="result-correct-chars text-green-500">120</span
+              ><span class="text-neutral-500">/</span
+              ><span class="result-wrong-chars text-red-500">5</span>
+            </output>
+          </div>
+          <div class="stat-card col-span-full">
+            <p class="stat-label">Time:</p>
+            <output class="text-[1.6rem] font-bold sm:text-[2rem]"
+              ><span class="result-time">60</span>s</output
+            >
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-secondary btnReset mt-[1.2rem] sm:mt-[1.6rem] cursor-pointer"
+        >
+          Beat This Score
+          <svg class="icon-recolor h-[1.6rem] w-[1.6rem]" aria-hidden="true">
+            <use href="images/sprite.svg#refresh"></use>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        class="mx-auto flex container-shape w-full max-w-[52rem] flex-col items-center gap-[1.2rem] py-[2.4rem] sm:gap-[1.6rem] sm:py-[3.2rem] text-center hidden-item"
+        id="high-score-smashed"
+        inert
+      >
+        <svg
+          aria-hidden="true"
+          class="icon-recolor h-[4rem] w-[4rem] sm:h-[4.8rem] sm:w-[4.8rem] text-yellow-400"
+        >
+          <use href="images/sprite.svg#sparkle"></use>
+        </svg>
+        <h2 class="text-[2.4rem] font-bold sm:text-[3.4rem]">
+          High Score Smashed!
+        </h2>
+        <p class="text-[1.4rem] text-neutral-500 sm:text-[1.6rem]">
+          You're getting faster. That was incredible typing.
+        </p>
+
+        <div
+          class="mt-[1.2rem] grid w-full grid-cols-1 gap-[1.2rem] sm:mt-[1.6rem] sm:grid-cols-3 sm:gap-[1.6rem]"
+        >
+          <div class="stat-card">
+            <p class="stat-label">WPM:</p>
+            <output class="result-wpm text-[1.6rem] font-bold sm:text-[2rem]"
+              >95</output
+            >
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Accuracy:</p>
+            <output
+              class="text-[1.6rem] font-bold text-green-500 sm:text-[2rem]"
+            >
+              <span class="result-accuracy">90</span>%
+            </output>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Characters</p>
+            <output class="text-[1.6rem] font-bold sm:text-[2rem]">
+              <span class="result-correct-chars text-green-500">120</span
+              ><span class="text-neutral-500">/</span
+              ><span class="result-wrong-chars text-red-500">5</span>
+            </output>
+          </div>
+          <div class="stat-card col-span-full">
+            <p class="stat-label">Time:</p>
+            <output class="text-[1.6rem] font-bold sm:text-[2rem]"
+              ><span class="result-time">60</span>s</output
+            >
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-secondary btnReset mt-[1.2rem] sm:mt-[1.6rem] cursor-pointer"
+        >
+          Beat This Score
+          <svg class="icon-recolor h-[1.6rem] w-[1.6rem]" aria-hidden="true">
+            <use href="images/sprite.svg#refresh"></use>
+          </svg>
+        </button>
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-x-0 bottom-0 h-[14rem] overflow-hidden"
+        >
+          <svg
+            viewBox="0 0 1440 326"
+            class="absolute bottom-0 left-1/2 h-auto w-[80rem] max-w-none -translate-x-1/2 rotate-180 sm:w-[100rem] -z-1"
+          >
+            <use href="images/sprite.svg#decorative-bg"></use>
+          </svg>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/sora';
+@custom-variant hover (&:hover);
+@theme {
+  --color-neutral-900: #121212;
+  --color-neutral-800: #262626;
+  --color-neutral-500: #737378;
+  --color-neutral-400: #969699;
+  --color-neutral-0: #ffffff;
+  --color-blue-600: #1b75ff;
+  --color-blue-400: #539eff;
+  --color-red-500: #dc4a5a;
+  --color-green-500: #47bc74;
+  --color-yellow-400: #f7de81;
+  --font-sans: 'Sora Variable', sans-serif;
+}
+@layer base {
+  html {
+    font-size: 62.5%;
+  }
+}
+@layer components {
+  .divider {
+    @apply border-t border-neutral-800;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-[0.8rem] rounded-[1.2rem] bg-blue-600 px-[0.7rem] py-[1rem] text-[1.2rem] sm:px-[2.8rem] sm:py-[1.6rem] sm:text-[1.6rem] font-bold text-neutral-0 transition-colors hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 cursor-pointer;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-[0.8rem] rounded-[1.2rem] bg-neutral-0 px-[2.8rem] py-[1.4rem] text-[1.6rem] font-bold text-neutral-900 transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400;
+  }
+  .btn-restart {
+    @apply inline-flex items-center justify-center gap-[0.8rem] rounded-[1.2rem] bg-neutral-800 px-[2.4rem] py-[1.2rem] text-[1.5rem] font-bold text-neutral-0 transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400;
+  }
+  .chip {
+    @apply cursor-pointer rounded-full border border-neutral-500 px-[1.6rem] py-[0.6rem] text-[1.4rem] font-medium text-neutral-0 transition-colors hover:border-blue-400 hover:text-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400;
+  }
+  .chip-active {
+    @apply border-blue-600 text-blue-400;
+  }
+  .stat-card {
+    @apply flex flex-col items-center gap-[0.6rem] rounded-[1rem] border border-neutral-800 px-[2rem] py-[1.6rem] text-center;
+  }
+  .stat-label {
+    @apply text-[1.4rem] text-neutral-500;
+  }
+  .dropdown {
+    @apply relative;
+  }
+  .dropdown-trigger {
+    @apply flex w-max cursor-pointer list-none items-center justify-between gap-[0.8rem] rounded-full border border-neutral-500 px-[1.6rem] py-[0.8rem] text-[1.4rem] font-medium text-neutral-0 [&::-webkit-details-marker]:hidden;
+  }
+  .dropdown-panel {
+    @apply absolute z-10 mt-[0.8rem] flex min-w-[16rem] -left-6 flex-col gap-[0.2rem] rounded-[1.2rem] border border-neutral-800 bg-neutral-800 p-[1rem];
+  }
+  .dropdown-option {
+    @apply flex cursor-pointer items-center gap-[1rem] rounded-[0.8rem] px-[1rem] py-[0.8rem] text-[1.5rem] text-neutral-0 hover:bg-neutral-900/60;
+  }
+  .icon-recolor path {
+    fill: currentColor;
+  }
+  .btnReset {
+    @apply duration-300 transition-opacity hover:opacity-70;
+  }
+}
+@utility hidden-item {
+  @apply pointer-events-none opacity-0 scale-0 !absolute;
+}
+@utility overlay-text {
+  @apply blur-[0.3rem];
+}
+@utility current-cursor {
+  @apply border-l-2 border-blue-500 bg-neutral-800;
+}
+@utility right-cursor {
+  @apply text-green-400 bg-green-400/10;
+}
+@utility char {
+  @apply mx-1 p-1 rounded-xl duration-300 transition-colors;
+}
+@utility wrong-cursor {
+  @apply text-red-500 underline bg-red-500/10;
+}
+@utility not-able {
+  @apply pointer-events-none blur-[0.3rem];
+}
