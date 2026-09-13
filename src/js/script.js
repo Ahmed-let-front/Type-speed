@@ -244,7 +244,7 @@ const typingHandler = () => {
 };
 const renderTextPessage = dif => {
   const passagesLookup = {
-    easy: 'The sun rose over the quiet',
+    easy: 'The sun rose over the quiet town. Birds sang in the trees as people woke up and started their day.',
     medium:
       'Learning a new programming language takes time and patience. Consistent practice every day is the key to building strong problem-solving skills.',
     hard: 'The archaeological expedition unearthed artifacts that complicated prevailing theories about Bronze Age trade networks. Obsidian from Anatolia, lapis lazuli from Afghanistan, and amber from the Baltic—all discovered in a single Mycenaean tomb—suggested commercial connections far more extensive than previously hypothesized.',
