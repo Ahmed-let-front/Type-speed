@@ -183,7 +183,7 @@ const splitTextAndCreateSpan = () => {
   });
 };
 const vaildRightCahr = chr => {
-  const typeSound = new Audio('/sounds/key-click.mp3');
+  const typeSound = new Audio('./sounds/key-click.mp3');
   typeSound.volume = 0.5;
   typeSound.play();
   chr.classList.remove('current-cursor');
@@ -191,7 +191,7 @@ const vaildRightCahr = chr => {
   elements.totalWord.correct++;
 };
 const vaildWrongCahr = chr => {
-  const errorSound = new Audio('/sounds/erorr.mp3');
+  const errorSound = new Audio('./sounds/erorr.mp3');
   errorSound.volume = 0.5;
   errorSound.play();
   chr.classList.remove('current-cursor');
