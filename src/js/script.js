@@ -20,7 +20,7 @@ const elements = {
   lastWPM: 0,
   WPM: 0,
   accuracy: 0,
-  totalWord: { correct: 0, wrong: 0 },
+  totalChars: { correct: 0, wrong: 0 },
   timerRef: '',
   modeCounter: 'timed',
   startController: new AbortController(),
@@ -30,8 +30,8 @@ const createMobileInput = () => {
   elements.hiddenInput = document.createElement('input');
   elements.hiddenInput.type = 'text';
   elements.hiddenInput.id = 'mobileHiddenInput';
-  elements.hiddenInput.style.cssText =
-    'position: absolute; opacity: 0; pointer-events: none; height: 0; width: 0;';
+  elements.hiddenInput.classList.add('sr-only');
+  elements.hiddenInput.setAttribute('aria-label', 'Typing test input');
   document.body.appendChild(elements.hiddenInput);
   elements.hiddenInput.addEventListener('input', handleMobileTyping);
 };
@@ -59,8 +59,8 @@ const editUIStats = el => {
       : elements.seconds;
   wpmEl.textContent = elements.WPM;
   accEl.textContent = elements.accuracy;
-  correctCharEl.textContent = elements.totalWord.correct;
-  wrongCharEl.textContent = elements.totalWord.wrong;
+  correctCharEl.textContent = elements.totalChars.correct;
+  wrongCharEl.textContent = elements.totalChars.wrong;
   timeEl.textContent = finalElapsedSeconds;
 };
 const counter = () => {
@@ -119,6 +119,27 @@ const startTimerDown = () => {
     counter();
   }, 1000);
 };
+const removeAnyColorInLiveAcc = () => {
+  const classesToCheck = ['text-red-500', 'text-yellow-400', 'text-green-500'];
+  const cl = classesToCheck.filter(cls =>
+    elements.liveAccEl.classList.contains(cls),
+  )[0];
+  elements.liveAccEl.classList.remove(cl);
+};
+const setCorrectColorInLiveAcc = () => {
+  if (elements.accuracy >= 80)
+    elements.liveAccEl.classList.add('text-green-500');
+  else if (elements.accuracy >= 50)
+    elements.liveAccEl.classList.add('text-yellow-400');
+  else if (elements.accuracy <= 50)
+    elements.liveAccEl.classList.add('text-red-500');
+};
+const editStatsUi = () => {
+  removeAnyColorInLiveAcc();
+  setCorrectColorInLiveAcc();
+  elements.liveWPMEl.textContent = elements.WPM;
+  elements.liveAccEl.textContent = elements.accuracy;
+};
 const startTimerUp = () => {
   elements.timerRef = setInterval(counterUp, 1000);
 };
@@ -146,14 +167,14 @@ const computeWPM = () => {
   const elapsedMinutes = elapsedSeconds / 60;
   elements.WPM =
     elapsedMinutes > 0
-      ? Math.round(elements.totalWord.correct / 5 / elapsedMinutes)
+      ? Math.round(elements.totalChars.correct / 5 / elapsedMinutes)
       : 0;
 };
 const computeAccuracy = () => {
-  const totalChars = elements.totalWord.wrong + elements.totalWord.correct;
+  const totalChars = elements.totalChars.wrong + elements.totalChars.correct;
   elements.accuracy =
     totalChars > 0
-      ? Math.round((elements.totalWord.correct / totalChars) * 100)
+      ? Math.round((elements.totalChars.correct / totalChars) * 100)
       : 100;
 };
 const computeStats = () => {
@@ -202,7 +223,7 @@ const vaildRightCahr = chr => {
   typeSound.play();
   chr.classList.remove('current-cursor');
   chr.classList.add('right-cursor');
-  elements.totalWord.correct++;
+  elements.totalChars.correct++;
 };
 const vaildWrongCahr = chr => {
   const errorSound = new Audio('./sounds/erorr.mp3');
@@ -210,7 +231,7 @@ const vaildWrongCahr = chr => {
   errorSound.play();
   chr.classList.remove('current-cursor');
   chr.classList.add('wrong-cursor');
-  elements.totalWord.wrong++;
+  elements.totalChars.wrong++;
 };
 const markOnNextEl = nextChr => {
   if (!nextChr) return;
@@ -232,11 +253,10 @@ const handleBackSpace = () => {
     .querySelectorAll('.char')
     .forEach(btn => btn.classList.remove('current-cursor'));
   targerChar.classList.remove('wrong-cursor', 'right-cursor');
-  elements.totalWord[type]--;
+  elements.totalChars[type]--;
   markOnNextEl(targerChar);
   computeStats();
-  elements.liveWPMEl.textContent = elements.WPM;
-  elements.liveAccEl.textContent = elements.accuracy;
+  editStatsUi();
   elements.currentIndex--;
 };
 const handleTyping = e => {
@@ -253,8 +273,7 @@ const handleTyping = e => {
   else vaildWrongCahr(targerChar);
   markOnNextEl(nextChr);
   computeStats();
-  elements.liveWPMEl.textContent = elements.WPM;
-  elements.liveAccEl.textContent = elements.accuracy;
+  editStatsUi();
   elements.currentIndex++;
   if (elements.currentIndex >= elements.charElements.length) {
     document.removeEventListener('keydown', handleTyping);
@@ -289,8 +308,7 @@ const handleMobileTyping = e => {
   else vaildWrongCahr(targerChar);
   markOnNextEl(nextChr);
   computeStats();
-  elements.liveWPMEl.textContent = elements.WPM;
-  elements.liveAccEl.textContent = elements.accuracy;
+  editStatsUi();
   elements.currentIndex++;
   if (elements.currentIndex >= elements.charElements.length) {
     elements.hiddenInput.blur();
@@ -378,8 +396,8 @@ const resetStates = () => {
   elements.accuracy = 0;
   elements.seconds = 60;
   elements.currentIndex = 0;
-  elements.totalWord.correct = 0;
-  elements.totalWord.wrong = 0;
+  elements.totalChars.correct = 0;
+  elements.totalChars.wrong = 0;
   elements.charElements = [];
   elements.modeCounter = 'timed';
   elements.timerRef = '';
@@ -387,6 +405,8 @@ const resetStates = () => {
 };
 const resetstatesUI = () => {
   elements.liveWPMEl.textContent = elements.WPM;
+  removeAnyColorInLiveAcc();
+  elements.liveAccEl.classList.add('text-green-500');
   elements.liveAccEl.textContent = '100';
   elements.timeCounter.querySelector('#min').textContent = '01';
   elements.timeCounter.querySelector('#sec').textContent = '00';
